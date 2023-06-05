@@ -1,9 +1,18 @@
 package main
 
 import (
-	"fmt"
+	"net/http"
+
+	"github.com/go-chi/chi/v5"
+	"github.com/norbertgruszka/booking-app/product-api/pkg/config"
+	"github.com/norbertgruszka/booking-app/product-api/pkg/routes"
 )
 
 func main() {
-	fmt.Println("Hello world")
+	config.ConnectToDb()
+
+	r := chi.NewRouter()
+	routes.RegisterRoutes(r)
+	http.Handle("/", r)
+	http.ListenAndServe(":8080", r)
 }
