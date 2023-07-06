@@ -17,7 +17,7 @@ For that project I wanted to use Cilium as CNI. Execute following commands to in
 
 ```bash
 cilium install
-helm upgrade --kube-context kind-booking-app --repo https://helm.cilium.io/ cilium cilium --version 1.13.3 --namespace kube-system --values ./helm/cilium.yml
+helm upgrade --install --kube-context kind-booking-app --repo https://helm.cilium.io/ cilium cilium --version 1.13.3 --namespace kube-system --values ./helm/cilium.yml
 ```
 
 ### Install metallb

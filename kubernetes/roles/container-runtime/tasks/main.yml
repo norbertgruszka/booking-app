@@ -1,0 +1,26 @@
+---
+- name: Populate service facts
+  ansible.builtin.service_facts:
+
+- name: Install dependencies from apt
+  apt:
+    pkg:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+    state: present
+    update_cache: yes
+
+- name: Check if runc is already installed
+  stat:
+    path: /usr/local/sbin/runc
+  register: runc_file
+
+- import_tasks: install-containerd.yml
+  when: ansible_facts.services['containerd.service'] is not defined
+
+- import_tasks: install-runc.yml
+  when: not runc_file.stat.exists
+
+- import_tasks: install-kube-tools.yml
+  

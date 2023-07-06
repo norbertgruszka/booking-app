@@ -1,0 +1,7 @@
+---
+- name: Pre-confgure Nodes
+  hosts: all
+  become: yes
+  roles:
+    - role: 'roles/container-runtime'
+    - role: 'roles/kubeadm'

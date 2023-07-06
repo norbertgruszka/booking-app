@@ -1,0 +1,20 @@
+---
+- block:
+    - name: Add apt.kubernetes.io APT key
+      get_url:
+        url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+        dest: /etc/apt/keyrings/kubernetes-archive-keyring.asc
+
+    - name: Add apt.kubernetes.io repository
+      ansible.builtin.apt_repository:
+        repo: "deb [signed-by=/etc/apt/keyrings/kubernetes-archive-keyring.asc] https://apt.kubernetes.io/ kubernetes-xenial main"
+        state: present
+
+- name: Install Kuberenetes tools
+  apt: 
+    pkg:
+      - kubelet
+      - kubeadm
+      - kubectl
+    state: present
+    update_cache: yes

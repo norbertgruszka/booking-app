@@ -1,0 +1,28 @@
+---
+- name: Download containerd binaries
+  get_url:
+    url: 'https://github.com/containerd/containerd/releases/download/v{{ containerd_version }}/containerd-{{ containerd_version }}-linux-amd64.tar.gz'
+    dest: /tmp/containerd-{{ containerd_version }}-linux-amd64.tar.gz
+
+- name: Extract containerd binaries
+  unarchive:
+    src: /tmp/containerd-{{ containerd_version }}-linux-amd64.tar.gz
+    dest: /usr/local
+    remote_src: yes
+
+- name: Download containerd service config
+  get_url:
+    url: 'https://raw.githubusercontent.com/containerd/containerd/v{{ containerd_version }}/containerd.service'
+    dest: /etc/systemd/system/containerd.service
+
+- name: Start containerd service
+  systemd:
+    state: started
+    daemon_reload: true
+    enabled: true
+    name: containerd
+
+- name: Clean up containerd tar.gz file
+  file:
+    path: /tmp/containerd-{{ containerd_version }}-linux-amd64.tar.gz
+    state: absent
